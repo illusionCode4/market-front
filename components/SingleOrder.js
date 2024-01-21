@@ -19,6 +19,7 @@ const StyledOrder = styled.div`
 `;
 
 const TrackingInfo = styled.div`
+  width: 3rem;
   font-weight: bold;
   font-size: 12px;
   padding: 8px 10px;
@@ -177,9 +178,7 @@ export default function SingleOrder({ line_items, createdAt, ...rest }) {
         <ButtonRowDiv>
           {!isOrderConfirmed && !isOrderCanceled && (
             <TrackingInfo>
-              {rest.delivered
-                ? 'TrackingNumber:' + rest.deliver
-                : 'Delivery in progress'}
+              {rest.delivered ? '快递单号:' + rest.deliver : '待发货'}
             </TrackingInfo>
           )}
 

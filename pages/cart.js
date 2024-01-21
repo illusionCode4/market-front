@@ -108,6 +108,7 @@ export default function CartPage() {
     } else {
       setProducts([]);
     }
+    console.log(cartProducts);
   }, [cartProducts]);
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -141,6 +142,15 @@ export default function CartPage() {
     removeProduct(id);
   }
   async function goToPayment() {
+    try {
+      await axios.post('/api/check', { cartProducts });
+      // console.log(check);
+    } catch (error) {
+      // console.log('An error occurred:', error.response.data);
+      alert(error.response.data.error);
+      return;
+    }
+
     const response = await axios.post('/api/checkout', {
       name,
       email,

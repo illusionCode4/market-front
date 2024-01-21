@@ -26,22 +26,45 @@ export default async function handler(req, res) {
   const productsInfos = await Product.find({ _id: uniqueIds });
 
   let line_items = [];
+
+  // const data = {};
   for (const productId of uniqueIds) {
     const productInfo = productsInfos.find(
       (p) => p._id.toString() === productId
     );
+    // console.log({ productInfo });
     const quantity = productsIds.filter((id) => id === productId)?.length || 0;
     if (quantity > 0 && productInfo) {
+      // data[productId] = quantity;
+
       line_items.push({
         quantity,
         price_data: {
           currency: 'USD',
-          product_data: { name: productInfo.title },
+          product_data: { name: productInfo.title, id: productInfo._id },
           unit_amount: quantity * productInfo.price * 100,
         },
       });
     }
   }
+
+  // for (const productId in data) {
+  //   const product = await Product.findById(productId);
+
+  //   if (product && product.amount >= data[productId]) {
+  //     // 更新数据库，减去购买的数量
+  //     const updatedProduct = await Product.findOneAndUpdate(
+  //       { _id: productId },
+  //       { $inc: { amount: -data[productId] } }, // 使用 $inc 操作符减去指定数量
+  //       { new: true } // 返回更新后的文档
+  //     );
+
+  //     // 在这里可以继续处理 updatedProduct，例如输出更新后的信息
+  //     console.log(
+  //       `产品 ${updatedProduct.title} 更新后的数量: ${updatedProduct.amount}`
+  //     );
+  //   }
+  // }
 
   const session = await getServerSession(req, res, authOptions);
 
